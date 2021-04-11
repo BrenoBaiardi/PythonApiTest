@@ -45,9 +45,9 @@ def put_user(users_url):
     :return: the response concerning the update"""
     sample_user = {
         "name": "morpheus",
-        "job": "another_job"
+        "job": "another job"
     }
-    return requests.post(users_url, sample_user)
+    return requests.put(users_url, sample_user)
 
 
 def test_get_users_is_sucess(get_users_list):
@@ -87,6 +87,24 @@ def test_create_user_returns_success(post_user):
         response_json["name"],
         response_json["job"],
         "createdAt" in response_json.keys(),
+        response.status_code
+    )
+
+    assert_that(actual, equal_to(expected), "Expected results not found in POST \"/users\" endpoint")
+
+def test_update_user_returns_success(put_user):
+    response = put_user
+    response_json = response.json()
+    expected = (
+        "morpheus",
+        "another job",
+        True,
+        requests.codes["ok"]
+    )
+    actual = (
+        response_json["name"],
+        response_json["job"],
+        "updatedAt" in response_json.keys(),
         response.status_code
     )
 
