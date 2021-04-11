@@ -2,6 +2,8 @@ import requests
 import pytest
 from hamcrest import assert_that, equal_to, has_key, contains_exactly, contains
 
+EXPECTED_NOT_FOUND_IN_GET = "Expected results not found in GET \"/users\" endpoint"
+
 BASE_PATH = 'https://reqres.in/api'
 USERS_ENDPOINT = '/users'
 
@@ -43,7 +45,7 @@ def test_get_users_is_sucess(get_users_list):
     users_list_not_empty = len(users_list) > 0
     expected = (True, requests.codes["ok"])
     actual = (users_list_not_empty, response.status_code)
-    assert_that(actual, equal_to(expected), "Expected results not found in GET \"/users\" endpoint")
+    assert_that(actual, equal_to(expected), EXPECTED_NOT_FOUND_IN_GET)
 
 
 def test_get_single_user(users_url):
@@ -53,7 +55,11 @@ def test_get_single_user(users_url):
     actual = (user_data["id"] == 2,
               user_data["first_name"],
               response.status_code)
-    assert_that(actual, equal_to(expected), "Expected results not found in GET \"/users\" endpoint")
+    assert_that(actual, equal_to(expected), EXPECTED_NOT_FOUND_IN_GET)
+
+def test_single_user_not_found(users_url):
+    response = requests.get(users_url + "/23")
+    assert_that(requests.codes["not_found"], equal_to(response.status_code), EXPECTED_NOT_FOUND_IN_GET)
 
 
 def test_create_user_returns_success(post_user):
