@@ -10,32 +10,43 @@ USERS_ENDPOINT = '/users'
 
 @pytest.fixture
 def base_url():
-    """ Returns a response to a get request with the users endpoint
-    :return: the response"""
+    """ :return: the API base url"""
     return BASE_PATH
+
 
 @pytest.fixture
 def users_url(base_url):
-    """ Returns a response to a get request with the users endpoint
-    :return: the response"""
+    """ Adds the users endpoint to the base url
+    :return: the API base url with the users endpoint """
     return base_url + USERS_ENDPOINT
 
 
 @pytest.fixture
 def get_users_list(users_url):
-    """ Returns a response to a get request with the users endpoint
-    :return: the response"""
+    """ Sends get request to obtain the users list
+    :return: the response containing the list"""
     return requests.get(users_url)
 
 
 @pytest.fixture
 def post_user(users_url):
+    """ Sends post request to create a user to the users endpoint
+    :return: the response concerning the creation"""
     sample_user = {
         "name": "morpheus",
         "job": "leader"
     }
-    """ Returns a response to a post request with the users endpoint
-    :return: the response"""
+    return requests.post(users_url, sample_user)
+
+
+@pytest.fixture
+def put_user(users_url):
+    """ Sends put request to update a user to the users endpoint
+    :return: the response concerning the update"""
+    sample_user = {
+        "name": "morpheus",
+        "job": "another_job"
+    }
     return requests.post(users_url, sample_user)
 
 
@@ -57,6 +68,7 @@ def test_get_single_user(users_url):
               response.status_code)
     assert_that(actual, equal_to(expected), EXPECTED_NOT_FOUND_IN_GET)
 
+
 def test_single_user_not_found(users_url):
     response = requests.get(users_url + "/23")
     assert_that(requests.codes["not_found"], equal_to(response.status_code), EXPECTED_NOT_FOUND_IN_GET)
@@ -65,7 +77,6 @@ def test_single_user_not_found(users_url):
 def test_create_user_returns_success(post_user):
     response = post_user
     response_json = response.json()
-
     expected = (
         "morpheus",
         "leader",
