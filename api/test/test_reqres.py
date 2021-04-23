@@ -17,7 +17,8 @@ def base_url():
 @pytest.fixture
 def users_url(base_url):
     """ Adds the users endpoint to the base url
-    :return: the API base url with the users endpoint """
+    :return: the API base url with the users endpoint
+    :rtype: String"""
     return base_url + USERS_ENDPOINT
 
 
