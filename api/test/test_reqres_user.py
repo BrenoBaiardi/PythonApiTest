@@ -4,52 +4,6 @@ from hamcrest import assert_that, equal_to, has_key, contains_exactly, contains
 
 EXPECTED_NOT_FOUND_IN_GET = "Expected results not found in GET \"/users\" endpoint"
 
-BASE_PATH = 'https://reqres.in/api'
-USERS_ENDPOINT = '/users'
-
-
-@pytest.fixture
-def base_url():
-    """ :return: the API base url"""
-    return BASE_PATH
-
-
-@pytest.fixture
-def users_url(base_url):
-    """ Adds the users endpoint to the base url
-    :return: the API base url with the users endpoint
-    :rtype: String"""
-    return base_url + USERS_ENDPOINT
-
-
-@pytest.fixture
-def get_users_list(users_url):
-    """ Sends get request to obtain the users list
-    :return: the response containing the list"""
-    return requests.get(users_url)
-
-
-@pytest.fixture
-def post_user(users_url):
-    """ Sends post request to create a user to the users endpoint
-    :return: the response concerning the creation"""
-    sample_user = {
-        "name": "morpheus",
-        "job": "leader"
-    }
-    return requests.post(users_url, sample_user)
-
-
-@pytest.fixture
-def put_user(users_url):
-    """ Sends put request to update a user to the users endpoint
-    :return: the response concerning the update"""
-    sample_user = {
-        "name": "morpheus",
-        "job": "another job"
-    }
-    return requests.put(users_url, sample_user)
-
 
 def test_get_users_is_sucess(get_users_list):
     response = get_users_list
