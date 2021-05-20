@@ -47,6 +47,7 @@ def test_create_user_returns_success(post_user):
 
     assert_that(actual, equal_to(expected), "Expected results not found in POST \"/users\" endpoint")
 
+
 def test_update_user_returns_success(put_user):
     response = put_user
     response_json = response.json()
