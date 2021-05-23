@@ -1,5 +1,8 @@
+import shutil
+
 import pytest
 import requests
+from py.path import local
 
 pytest_plugins = [
     "test",
@@ -45,6 +48,7 @@ def new_user_body():
         "password": "password"
     }
 
+
 @pytest.fixture()
 def non_compliant_user_body():
     return {
@@ -79,3 +83,28 @@ def put_user(users_url):
         "job": "another job"
     }
     return requests.put(users_url, sample_user)
+
+
+@pytest.fixture()
+def csv_cores():
+    return "cores.csv"
+
+
+@pytest.fixture()
+def popular_csv_cores(csv_cores):
+    # setUp
+    cores_file = open(csv_cores, mode='w')
+    cores_file.writelines("Azul,1")
+    cores_file.close()
+    yield cores_file.name
+    # tearDown
+    open(csv_cores, mode='w').close()
+
+
+@pytest.fixture()
+def criar_arquivo_customizado_com_tmpdir(tmpdir) -> local:
+    print(tmpdir.dirname)
+    path_arquivo = tmpdir.join('foo.txt')
+    path_arquivo.write("texto escrito")
+    yield path_arquivo
+    shutil.rmtree(path_arquivo.dirname)
