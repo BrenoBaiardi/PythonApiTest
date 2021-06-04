@@ -1,4 +1,5 @@
 import pytest
+import os
 from api.main.CriarArquivo import CriarArquivo
 
 
@@ -17,4 +18,7 @@ def get_criar_arquivo_com_cleanup():
 
 def test_cria_arquivo(get_criar_arquivo):
     get_criar_arquivo.cria_arquivo()
-    assert True
+    assert len(os.listdir("C:\\Users\\Breno Baiardi\\PycharmProjects\\Rest-Api-Test\\api\\test\\temp")) == 1
+
+
+# Abaixo com fixture default
