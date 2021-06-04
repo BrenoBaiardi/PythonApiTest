@@ -31,6 +31,6 @@ def get_criar_arquivo_em_tmpdir(tmpdir):
     return criar_arquivo
 
 
-def test_cria_arquivo_com_default(get_criar_arquivo_em_tmpdir,tmpdir):
+def test_cria_arquivo_com_default(get_criar_arquivo_em_tmpdir, tmpdir):
     get_criar_arquivo_em_tmpdir.cria_arquivo()
     assert len(os.listdir(tmpdir)) == 1
